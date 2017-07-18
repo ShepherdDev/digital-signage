@@ -30,8 +30,32 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotLiquid, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RockWeb\Bin\DotLiquid.dll</HintPath>
+    </Reference>
+    <Reference Include="Rock, Version=1.6.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RockWeb\Bin\Rock.dll</HintPath>
+    </Reference>
+    <Reference Include="Rock.Migrations">
+      <HintPath>..\RockWeb\Bin\Rock.Migrations.dll</HintPath>
+    </Reference>
+    <Reference Include="Rock.Rest">
+      <HintPath>..\RockWeb\Bin\Rock.Rest.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RockWeb\Bin\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RockWeb\Bin\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,7 +64,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Migrations\001_InstallSystemData.cs" />
+    <Compile Include="Migrations\002_AddPageAndBlock.cs" />
+    <Compile Include="Migrations\ExtendedMigration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rest\DigitalSignRotator.cs" />
+    <Compile Include="SystemGuid\Attribute.cs" />
+    <Compile Include="SystemGuid\AttributeQualifier.cs" />
+    <Compile Include="SystemGuid\Block.cs" />
+    <Compile Include="SystemGuid\BlockType.cs" />
+    <Compile Include="SystemGuid\ContentChannelType.cs" />
+    <Compile Include="SystemGuid\DefinedType.cs" />
+    <Compile Include="SystemGuid\DefinedValue.cs" />
+    <Compile Include="SystemGuid\Page.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
