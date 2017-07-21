@@ -1,5 +1,7 @@
 ﻿# Digital Signage for Rock RMS
 
+<img src="Documentation/AmazingRaceSlide.png" width="33%" align="right" />
+
 This plug-in provides functionality to drive digital displays from Rock
 Content Channels. Each content channel gets one or more schedules applied
 to it via a Defined Value. A display device is registered in the system
