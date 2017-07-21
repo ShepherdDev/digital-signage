@@ -5,7 +5,10 @@
 This plug-in provides functionality to drive digital displays from Rock
 Content Channels. Each content channel gets one or more schedules applied
 to it via a Defined Value. A display device is registered in the system
-and is configured for which of those Defined Values it will display for.
+and is configured for which of those Defined Values it will display for. Each
+slide is cycled through on the display and the entire list is looped forever.
+When changes are made to the content channel or schedule the display will
+automatically detect those changes and update itself.
 
 ### Capabilities
 
