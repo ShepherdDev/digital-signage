@@ -21,7 +21,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.DigitalSignage
 
     [IntegerField( "Slide Interval", "How long each slide should remain on screen before the next transition happens. Default is 8 seconds. Must be at least 4 seconds.", false, 0, order: 0 )]
     [IntegerField( "Update Interval", "How often should the slide rotator check for updates to the content channel. Default is 60 seconds. Must be at least 10 seconds.", false, 0, order: 1 )]
-    [CustomCheckboxListField( "Transitions", "Which transitions should be used. If none are selected then all available transitions will be used.", "bars^Bars,blinds^Blinds,blocks^Blocks,blocks2^Blocks 2,dissolve^Dissolve,slide^Slide,zip^Zip,bars3d^Bars 3D,blinds3d^Blinds 3D,cube^Cube,tiles3d^Tiles 3D,turn^Turn", false, order: 2 )]
+    [CustomCheckboxListField( "Transitions", "Which transitions should be used. If none are selected then all available transitions will be used.", "bars^Bars,blinds^Blinds,blocks^Blocks,blocks2^Blocks 2,dissolve^Dissolve,slide^Slide,zip^Zip,bars3d^Bars 3D,blinds3d^Blinds 3D,cube^Cube 3D,tiles3d^Tiles 3D,turn^Turn 3D", false, order: 2 )]
     [ContentChannelField( "Content Channel Override", "By default the configured schedules on the device will determine what content channel to display. You can override this behavior to always show this content channel no matter what.", false, order: 3 )]
     public partial class DigitalSignRotator : RockBlock
     {

@@ -26,3 +26,7 @@
     left: 25%;
     text-align: center;
 }
+
+.dsrContainer iframe {
+    border: 0px;
+}
