@@ -1,4 +1,4 @@
-﻿## Digital Signate for Rock RMS
+﻿# Digital Signage for Rock RMS
 
 This plug-in provides functionality to drive digital displays from Rock
 Content Channels. Each content channel gets one or more schedules applied
