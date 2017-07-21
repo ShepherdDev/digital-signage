@@ -139,11 +139,10 @@ Below are some screenshots that show our final configuration.
 
 ![Content Schedules](Documentation/content-schedules.png)
 
-![Device Main Lobby](Documentation/device-main-lobby.png)
+<img src="Documentation/device-main-lobby.png" width="48%" />
+<img src="Documentation/device-childrens-lobby.png" width="48%" />
 
-![Device Children's Lobby](Documentation/device-childrens-lobby.png)
-
-![Device Second Campus Lobby](Documentation/device-second-campus-lobby.png)
+<img src="Documentation/device-second-campus-lobby.png" width="48%" />
 
 ### Supported Media Types
 
