@@ -37,17 +37,17 @@ INSERT INTO [ContentChannelType]
             //
             // Add the digital sign schedules defined type.
             //
-            RockMigrationHelper.AddDefinedType( "Global", "Digital Sign Schedules",
+            RockMigrationHelper.AddDefinedType( "Global", "Digital Sign Content Schedules",
                 "Defines what content is displayed on digital sign kiosks with the specified scheduling options. Leave schedule blank to show at all times. The first ordered match from the top down will be the content channel that is displayed.",
-                SystemGuid.DefinedType.DIGITAL_SIGN_SCHEDULES );
-            RockMigrationHelper.AddDefinedTypeAttribute( SystemGuid.DefinedType.DIGITAL_SIGN_SCHEDULES,
+                SystemGuid.DefinedType.DIGITAL_SIGN_CONTENT_SCHEDULES );
+            RockMigrationHelper.AddDefinedTypeAttribute( SystemGuid.DefinedType.DIGITAL_SIGN_CONTENT_SCHEDULES,
                 Rock.SystemGuid.FieldType.SCHEDULES, "Schedules", "com_shepherdchurch_Schedules",
                 "Select all the schedules you want this content channel to be active for. If no schedules are selected then this schedule always matches.",
-                0, string.Empty, SystemGuid.Attribute.DEFINED_VALUE_DIGITAL_SIGN_SCHEDULES_SCHEDULES );
-            RockMigrationHelper.AddDefinedTypeAttribute( SystemGuid.DefinedType.DIGITAL_SIGN_SCHEDULES,
+                0, string.Empty, SystemGuid.Attribute.DEFINED_VALUE_DIGITAL_SIGN_CONTENT_SCHEDULES_SCHEDULES );
+            RockMigrationHelper.AddDefinedTypeAttribute( SystemGuid.DefinedType.DIGITAL_SIGN_CONTENT_SCHEDULES,
                 Rock.SystemGuid.FieldType.CONTENT_CHANNEL, "Content Channel", "com_shepherdchurch_ContentChannel",
                 "The content channel that will be displayed for a matched schedule.",
-                1, string.Empty, SystemGuid.Attribute.DEFINED_VALUE_DIGITAL_SIGN_SCHEDULES_CONTENT_CHANNEL );
+                1, string.Empty, SystemGuid.Attribute.DEFINED_VALUE_DIGITAL_SIGN_CONTENT_SCHEDULES_CONTENT_CHANNEL );
 
             //
             // Add the device type.
@@ -74,9 +74,9 @@ INSERT INTO [ContentChannelType]
         {
             RockMigrationHelper.DeleteAttribute( SystemGuid.Attribute.DEVICE_CONTENT_SCHEDULES );
             RockMigrationHelper.DeleteDefinedValue( SystemGuid.DefinedValue.DEVICE_TYPE_DIGITAL_DISPLAY );
-            RockMigrationHelper.DeleteAttribute( SystemGuid.Attribute.DEFINED_VALUE_DIGITAL_SIGN_SCHEDULES_CONTENT_CHANNEL );
-            RockMigrationHelper.DeleteAttribute( SystemGuid.Attribute.DEFINED_VALUE_DIGITAL_SIGN_SCHEDULES_SCHEDULES );
-            RockMigrationHelper.DeleteDefinedType( SystemGuid.DefinedType.DIGITAL_SIGN_SCHEDULES );
+            RockMigrationHelper.DeleteAttribute( SystemGuid.Attribute.DEFINED_VALUE_DIGITAL_SIGN_CONTENT_SCHEDULES_CONTENT_CHANNEL );
+            RockMigrationHelper.DeleteAttribute( SystemGuid.Attribute.DEFINED_VALUE_DIGITAL_SIGN_CONTENT_SCHEDULES_SCHEDULES );
+            RockMigrationHelper.DeleteDefinedType( SystemGuid.DefinedType.DIGITAL_SIGN_CONTENT_SCHEDULES );
             RockMigrationHelper.DeleteAttribute( SystemGuid.Attribute.CONTENT_CHANNEL_ITEM_VIDEO_URL );
             RockMigrationHelper.DeleteAttribute( SystemGuid.Attribute.CONTENT_CHANNEL_ITEM_SLIDE );
             
