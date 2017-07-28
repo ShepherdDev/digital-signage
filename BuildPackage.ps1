@@ -141,7 +141,7 @@ Write-Host "Building version 1"
 # Build the project in Release mode.
 #
 $msbuild = "C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe"
-$proc = Start-Process $msbuild -Wait -PassThru
+$proc = Start-Process -Wait -PassThru $msbuild "/P:Configuration=Release"
 If ($proc.ExitCode -ne 0)
 {
     Write-Host "Build failed."
