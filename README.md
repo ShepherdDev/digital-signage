@@ -37,7 +37,7 @@ A plug-in that is simple to configure is an amazing plug-in. Sorry this
 plug-in is only a really good plug-in. Though once you get the concepts down
 you shouldn't have any trouble building up your perfect display system.
 
-* All of the content (images, audio, video links) is stored in Content
+* All of the content (images, audio, videos) is stored in Content
 Channels.
 * All of your display devices (computers) are setup as Devices in the
 Check-in Configuration section.
@@ -168,28 +168,38 @@ to standard web formats such as PNG or JPG.
 #### Video
 
 If you want to throw in some videos for people to watch (audio is played too)
-then put the link to the video in the `Video URL` attribute of the
-content channel item. When setting up a video slide you should leave the
-`Image` attribute blank.
+then put the link to the video in the `Slide Url` attribute of the
+content channel item.
 
-Since we don't know the actual length of the video we are using the public
-Javascript APIs from the respective video providers to receive events when
-the video finishes playing. This can cause hangups if 1) something just goes
-terribly wrong during playback and the video stops or 2) a network
-interrupt causes the video to stutter enough that the browser gives up
-trying to play it but doesn't trigger the "video ended" event.
+>Note: If you enter anything in the `Slide Url` attribute then
+>anything you attached to the `Slide` attribute will be ignored.
 
-##### Supported video providers
+There is some special brains at work that will wait up to 10 seconds for the
+video to begin playing, and if that expires then it will move on to the next
+slide. Also once the video begins playing it will wait for the duration of
+the video plus 15 seconds at which point it will timeout again and move on
+to the next slide. This should prevent the slideshow from hanging up if
+a video gets stuck for some reason.
 
+##### Supported video types
+
+You can link directly to a .M4V or .MP4 file or play from a supported video
+provider:
 * Vimeo
 * Youtube
+
+> Note: Because we have to detect the type of link you enter only some of
+> the URL formats for Vimeo and Youtube are supported (the most common ones).
+> Also we assume that that URL for a raw video file will end with `.m4v` or
+> `.mp4` otherwise it might not detect properly.
 
 #### Audio
 
 You can add background audio to your slideshow. The only supported file type
-is MP3. Upload your MP3 the same way you would for building an image slide
-except instead of uploading a PNG to the `Slide` attribute upload your MP3
-file instead. You obviously won't get a preview image but it will work.
+is MP3. You have two options for loading audio into the content channel.
+You can either enter a URL link to an MP3 file like you would a video file
+or you can upload your MP3 into the `Slide` attribute. You obviously won't
+get a preview image but it will actually work.
 
 When the slideshow starts any MP3 files will be compiled into a playlist and
 played one after another and loop when the playlist ends. If there a video
