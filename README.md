@@ -206,6 +206,14 @@ played one after another and loop when the playlist ends. If there a video
 slide comes up then the audio will fade out and then fade back in once the
 video has finished.
 
+### Query String Parameters
+
+The following query string paremeters are available to override certain
+default functionality.
+
+* Audio - `true` or `false`. If `false` then all audio (background audio
+and video audio) will be muted.
+
 ### Supported Clients
 
 This plug-in has been tested with the following browsers:
