@@ -10,7 +10,7 @@ namespace com.shepherdchurch.DigitalSignage.Migrations
     {
         public override void Up()
         {
-            Sql( "UPDATE [Attribute] SET [Name] = 'Slide Url',[Key] = 'SlideUrl' WHERE [Guid] = @Guid",
+            Sql( "UPDATE [Attribute] SET [Name] = 'Slide Url',[Key] = 'com_shepherdchurch_SlideUrl' WHERE [Guid] = @Guid",
                 new Dictionary<string, object> { { "@Guid", SystemGuid.Attribute.CONTENT_CHANNEL_ITEM_SLIDE_URL } } );
         }
 
