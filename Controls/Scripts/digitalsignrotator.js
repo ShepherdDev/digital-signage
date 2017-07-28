@@ -15,7 +15,8 @@
       updateInterval: 60000,
       transitions: ['bars', 'blinds', 'blocks', 'blocks2', 'dissolve', 'slide', 'zip', 'bars3d', 'blinds3d', 'cube', 'tiles3d', 'turn'],
       device: 0,
-      contentChannel: null
+      contentChannel: null,
+      audio: true
     }, options);
 
     //
@@ -43,7 +44,7 @@
         flux.start();
       }
 
-      if ($audio.attr('src'))
+      if ($audio.attr('src') && settings.audio)
       {
         $audio.get(0).play();
         $audio.animate({ volume: 1 }, settings.animationDuration);
@@ -195,7 +196,7 @@
       //
       // Initialize the audio playback.
       //
-      if (audioTracks.length > 0)
+      if (audioTracks.length > 0 && settings.audio)
       {
         $audio.attr('src', audioTracks[0]);
         $audio.prop('volume', 1);
@@ -226,29 +227,40 @@
     //
     function parseVideo(url)
     {
-      // - Supported YouTube URL formats:
-      //   - http://www.youtube.com/watch?v=My2FRPA3Gf8
-      //   - http://youtu.be/My2FRPA3Gf8
-      //   - https://youtube.googleapis.com/v/My2FRPA3Gf8
-      // - Supported Vimeo URL formats:
-      //   - http://vimeo.com/25451551
-      //   - http://player.vimeo.com/video/25451551
-      // - Also supports relative URLs:
-      //   - //player.vimeo.com/video/25451551
-
-      url.match(/(http:\/\/|https:\/\/|)(player.|www.)?(vimeo\.com|youtu(be\.com|\.be|be\.googleapis\.com))\/(video\/|embed\/|watch\?v=|v\/)?([A-Za-z0-9._%-]*)(\&\S+)?/);
       var type = null;
-      if (RegExp.$3.indexOf('youtu') > -1)
+      var id = null;
+
+      if (url.match(/(https?:\/\/|).*(mp4|m4v|mov)(\?|$)/) != null)
       {
-        type = 'youtube';
-      } else if (RegExp.$3.indexOf('vimeo') > -1)
+        type = 'mp4';
+        id = url;
+      }
+      else
       {
-        type = 'vimeo';
+        // - Supported YouTube URL formats:
+        //   - http://www.youtube.com/watch?v=My2FRPA3Gf8
+        //   - http://youtu.be/My2FRPA3Gf8
+        //   - https://youtube.googleapis.com/v/My2FRPA3Gf8
+        // - Supported Vimeo URL formats:
+        //   - http://vimeo.com/25451551
+        //   - http://player.vimeo.com/video/25451551
+        // - Also supports relative URLs:
+        //   - //player.vimeo.com/video/25451551
+
+        url.match(/(http:\/\/|https:\/\/|)(player.|www.)?(vimeo\.com|youtu(be\.com|\.be|be\.googleapis\.com))\/(video\/|embed\/|watch\?v=|v\/)?([A-Za-z0-9._%-]*)(\&\S+)?/);
+        if (RegExp.$3.indexOf('youtu') > -1)
+        {
+          type = 'youtube';
+        } else if (RegExp.$3.indexOf('vimeo') > -1)
+        {
+          type = 'vimeo';
+        }
+        id = RegExp.$6;
       }
 
       return {
         type: type,
-        id: RegExp.$6
+        id: id
       };
     }
 
@@ -268,6 +280,10 @@
       {
         playYoutubeVideo(video.id);
       }
+      else if (video.type == 'mp4')
+      {
+        playMp4Video(video.id);
+      }
       else
       {
         playOrSetup();
@@ -281,7 +297,6 @@
     {
       var $vid = null;
       var videoUrl = '//player.vimeo.com/video/' + videoId + '?autoplay=1';
-      var timer = setTimeout(function () { restartPlayback(); }, 10000);
 
       // Restart playback if the iframe timed out or video finished.
       function restartPlayback()
@@ -291,17 +306,33 @@
       }
 
       //
-      // Load the video in an iframe. If it doesn't load within 5 seconds assume there was
+      // Load the video in an iframe. If it doesn't load within 10 seconds assume there was
       // an error and restart playback.
       //
-      $vid = $('<iframe src="' + videoUrl + '" width="100%" height="100%" frameborder="0"><iframe>').hide();
+      var timer = setTimeout(function () { restartPlayback(); }, 10000);
+      $vid = $('<iframe src="' + videoUrl + '" frameborder="0"><iframe>').hide();
       $vid.on('load', function ()
       {
-        clearTimeout(timer);
-
         var player = new Vimeo.Player($vid.get(0));
+        
+        if (!settings.audio)
+        {
+          player.setVolume(0);
+        }
+
+        player.getDuration().then(function (duration)
+        {
+          //
+          // Clear the old timer and set a new timer for the duration of the video plus 15
+          // seconds.
+          //
+          clearTimeout(timer);
+          timer = setTimeout(function () { restartPlayback(); }, (duration + 15) * 1000);
+        });
+
         player.on('ended', function ()
         {
+          clearTimeout(timer);
           restartPlayback();
         });
 
@@ -318,7 +349,6 @@
     {
       var $vid = null;
       var videoUrl = '//www.youtube.com/embed/' + videoId + '?enablejsapi=1&autoplay=1&rel=0&controls=0&fs=0&modestbranding=1&showinfo=0';
-      var timer = setTimeout(function () { restartPlayback(); }, 10000);
 
       // Restart playback if the iframe timed out or video finished.
       function restartPlayback()
@@ -327,31 +357,92 @@
         playOrSetup(true);
       }
 
-      function onPlayerStateChange(event)
+      function onPlayerStateChange(player, event)
       {
-        if (event.data == YT.PlayerState.ENDED)
+        if (event.data == YT.PlayerState.PLAYING)
         {
+          //
+          // Clear the old timer and set a new timer for the duration of the video plus 15
+          // seconds.
+          //
+          clearTimeout(timer);
+          timer = setTimeout(function () { restartPlayback(); }, (player.getDuration() + 15) * 1000);
+
+          if (!settings.audio)
+          {
+            player.mute();
+          }
+        }
+        else if (event.data == YT.PlayerState.ENDED)
+        {
+          clearTimeout(timer);
           restartPlayback();
         }
       }
 
       //
-      // Load the video in an iframe. If it doesn't load within 5 seconds assume there was
+      // Load the video in an iframe. If it doesn't load within 10 seconds assume there was
       // an error and restart playback.
       //
-      $vid = $('<iframe id="dsrYoutube" src="' + videoUrl + '" width="100%" height="100%" frameborder="0"><iframe>').hide();
+      var timer = setTimeout(function () { restartPlayback(); }, 10000);
+      $vid = $('<iframe id="dsrYoutube" src="' + videoUrl + '" frameborder="0"><iframe>').hide();
       $vid.on('load', function ()
       {
-        clearTimeout(timer);
-
         var player = new YT.Player('dsrYoutube', {
           events: {
-            'onStateChange': onPlayerStateChange
+            'onStateChange': function (event) { onPlayerStateChange(player, event); }
           }
         });
 
         $vid.fadeIn(settings.animationDuration);
       });
+
+      $vid.insertBefore($fluxContainer);
+    }
+
+    //
+    // Play a raw video file with the given Video Id(URL).
+    //
+    function playMp4Video(videoId)
+    {
+      var $vid = null;
+      var videoUrl = videoId;
+
+      // Restart playback if the iframe timed out or video finished.
+      function restartPlayback()
+      {
+        $vid.remove();
+        playOrSetup(true);
+      }
+
+      //
+      // Load the video in an iframe. If it doesn't load within 10 seconds assume there was
+      // an error and restart playback.
+      //
+      var timer = setTimeout(function () { restartPlayback(); }, 10000);
+      $vid = $('<video autoplay="true" src="' + videoUrl + '"></video>').hide();
+      $vid.on('play', function ()
+      {
+        //
+        // Clear the old timer and set a new timer for the duration of the video plus 15
+        // seconds.
+        //
+        clearTimeout(timer);
+        timer = setTimeout(function () { restartPlayback(); }, ($vid.get(0).duration + 15) * 1000);
+
+        $vid.on('ended', function ()
+        {
+          clearTimeout(timer);
+          restartPlayback();
+        });
+
+        $vid.fadeIn(settings.animationDuration);
+      });
+
+      if (!settings.audio)
+      {
+        $vid.get(0).muted = true;
+      }
 
       $vid.insertBefore($fluxContainer);
     }

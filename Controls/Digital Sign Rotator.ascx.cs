@@ -118,6 +118,8 @@ namespace RockWeb.Plugins.com_shepherdchurch.DigitalSignage
                     hfContentChannel.Value = contentChannel.Id.ToString();
                 }
 
+                hfAudio.Value = PageParameter( "Audio" ).AsBoolean( true ).ToString().ToLower();
+
                 pnlError.Visible = false;
                 pnlContent.Visible = true;
             }

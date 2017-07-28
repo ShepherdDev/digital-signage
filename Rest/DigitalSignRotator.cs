@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Http;
 
@@ -180,15 +181,24 @@ namespace com.shepherdchurch.DigitalSignage.Rest
             {
                 Guid guid = Guid.Empty;
                 BinaryFile binaryFile = null;
+                string fileUrl;
 
                 item.LoadAttributes( rockContext );
 
                 //
                 // Now check for a video file.
                 //
-                if ( !string.IsNullOrWhiteSpace( item.GetAttributeValue( "com_shepherdchurch_Video" ) ) )
+                fileUrl = item.GetAttributeValue( "com_shepherdchurch_Video" );
+                if ( !string.IsNullOrWhiteSpace( fileUrl ) )
                 {
-                    contents.Slides.Add( item.GetAttributeValue( "com_shepherdchurch_Video" ) );
+                    if ( Regex.IsMatch( fileUrl, "\\.mp3(\\?|$)", RegexOptions.IgnoreCase ) )
+                    {
+                        contents.Audio.Add( fileUrl );
+                    }
+                    else
+                    {
+                        contents.Slides.Add( fileUrl );
+                    }
                 }
                 else
                 {

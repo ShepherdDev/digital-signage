@@ -11,6 +11,7 @@
             <asp:HiddenField ID="hfUpdateInterval" runat="server" />
             <asp:HiddenField ID="hfTransitions" runat="server" />
             <asp:HiddenField ID="hfContentChannel" runat="server" />
+            <asp:HiddenField ID="hfAudio" runat="server" />
 
             <div class="dsrContainer"></div>
         </asp:Panel>
@@ -58,6 +59,11 @@
                     if ($('#<%= hfContentChannel.ClientID %>').val())
                     {
                         options.contentChannel = $('#<%= hfContentChannel.ClientID %>').val();
+                    }
+
+                    if ($('#<%= hfAudio.ClientID %>').val())
+                    {
+                        options.audio = $('#<%= hfAudio.ClientID %>').val() == 'true';
                     }
 
                     $('.dsrContainer').digitalSign(options);
