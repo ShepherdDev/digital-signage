@@ -188,7 +188,7 @@ namespace com.shepherdchurch.DigitalSignage.Rest
                 //
                 // Now check for a video file.
                 //
-                fileUrl = item.GetAttributeValue( "com_shepherdchurch_Video" );
+                fileUrl = item.GetAttributeValue( "com_shepherdchurch_SlideUrl" );
                 if ( !string.IsNullOrWhiteSpace( fileUrl ) )
                 {
                     if ( Regex.IsMatch( fileUrl, "\\.mp3(\\?|$)", RegexOptions.IgnoreCase ) )

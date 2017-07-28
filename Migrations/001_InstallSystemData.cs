@@ -32,7 +32,7 @@ INSERT INTO [ContentChannelType]
             RockMigrationHelper.AddEntityAttribute( "Rock.Model.ContentChannelItem", Rock.SystemGuid.FieldType.URL_LINK,
                 "ContentChannelTypeId", contentChannelTypeId.ToString(), "Video", string.Empty,
                 "The image to be displayed on screen.", 0, string.Empty,
-                SystemGuid.Attribute.CONTENT_CHANNEL_ITEM_VIDEO_URL, "com_shepherdchurch_Video" );
+                SystemGuid.Attribute.CONTENT_CHANNEL_ITEM_SLIDE_URL, "com_shepherdchurch_Video" );
 
             //
             // Add the digital sign schedules defined type.
@@ -77,7 +77,7 @@ INSERT INTO [ContentChannelType]
             RockMigrationHelper.DeleteAttribute( SystemGuid.Attribute.DEFINED_VALUE_DIGITAL_SIGN_CONTENT_SCHEDULES_CONTENT_CHANNEL );
             RockMigrationHelper.DeleteAttribute( SystemGuid.Attribute.DEFINED_VALUE_DIGITAL_SIGN_CONTENT_SCHEDULES_SCHEDULES );
             RockMigrationHelper.DeleteDefinedType( SystemGuid.DefinedType.DIGITAL_SIGN_CONTENT_SCHEDULES );
-            RockMigrationHelper.DeleteAttribute( SystemGuid.Attribute.CONTENT_CHANNEL_ITEM_VIDEO_URL );
+            RockMigrationHelper.DeleteAttribute( SystemGuid.Attribute.CONTENT_CHANNEL_ITEM_SLIDE_URL );
             RockMigrationHelper.DeleteAttribute( SystemGuid.Attribute.CONTENT_CHANNEL_ITEM_SLIDE );
             
             Sql( "DELETE FROM [ContentChannelType] WHERE [Guid] = 'D5F479C6-2460-4021-8BB0-40F652494783'" );
