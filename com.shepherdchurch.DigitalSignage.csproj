@@ -73,6 +73,7 @@
     <Compile Include="Migrations\003_PageAuthorization.cs" />
     <Compile Include="Migrations\004_UpdateVideoToSlideUrl.cs" />
     <Compile Include="Migrations\005_FixAttributeDescription.cs" />
+    <Compile Include="Migrations\006_SetBinaryFileType.cs" />
     <Compile Include="Migrations\ExtendedMigration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rest\DigitalSignRotator.cs" />

@@ -10,6 +10,28 @@ slide is cycled through on the display and the entire list is looped forever.
 When changes are made to the content channel or schedule the display will
 automatically detect those changes and update itself.
 
+## Quick Setup
+
+1. Create a new Content Channel called `Generic Slides`. Set the Type to `Digital
+Signage` and turn on Items Manually Ordered.
+2. Create two Content Channel Items. Upload a different image into each item.
+3. Go to your Defined Type page for `Digital Sign Content Schedules`.
+4. Add a new Value titled `Default Slides` and select the `Default Slides`
+content channel.
+5. Go to your Check-in Devices page.
+6. Add a new Device called `Lobby` and set the Device Type to `Digital
+Display`.
+7. Once you set the type to `Digital Display`, the Content Schedules
+attribute will appear. Select the `Default Slides` option. Save the Device.
+8. Open your web browser and navigate to
+http://rock.yourchurch.org/digitalsign
+9. You will be informed that your kiosk is not recognized and given the IP
+address. Edit the Device you just created and put this IP address in and
+save the changes.
+10. Refresh your browser and your slide show should begin.
+
+## System Overview
+
 ### Capabilities
 
 A configured digital sign device simply displays an HTML page from Rock that
@@ -224,6 +246,8 @@ This plug-in has been tested with the following browsers:
 * Firefox 49.0.2 for Mac
 * Internet Explorer 11.483.15063.0 <sup>1</sup>
 * [Porteus-Kiosk](http://porteus-kiosk.org/) 4.4.0 with Firefox
+* Safari for Mac 10.12
+* Safari Mobile<sup>2</sup> for iOS 10.3
 
 Other versions of browsers and clients will probably work too. These are
 just the ones that we have explicitly tested.
@@ -233,7 +257,9 @@ get any longer?
 
 **Known Issues**
 
-1 - Internet Explorer does not work handle the 3D transitions properly.
+1. Internet Explorer does not work handle the 3D transitions properly.
+2. Safari Mobile will not allow auto-play of video or audio, so only still
+images will work.
 
 ### Unsupported Clients
 
