@@ -260,10 +260,3 @@ get any longer?
 1. Internet Explorer does not work handle the 3D transitions properly.
 2. Safari Mobile will not allow auto-play of video or audio, so only still
 images will work.
-
-### Unsupported Clients
-
-The following clients are known to not work.
-
-* iOS (iPhone and iPad). Audio does not work, video does not auto-play,
-transitions do not work.
