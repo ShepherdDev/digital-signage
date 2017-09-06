@@ -68,6 +68,19 @@ Values that you will configure. These Defined Values (of type `Digital Sign
 Content Schedules`) let you configure schedules that are tied to the content
 channels. These will often referred to as just `Content Schedules`.
 
+### Content Channels
+
+Each of the slide shows you configure (that is each Content Channel) has a few
+attributes that you can use to customize how that particular set of slides
+will appear and transition.
+
+* Slide Interval - The number of seconds each slide will be displayed before
+going to the next slide. This must be at least 4 seconds and if not set then
+the value defined on the Block configuration will be used instead.
+* Transitions - Which transitions will be used for this particular set of
+slides. If not set then the value defined in the Block configuration will be
+used instead.
+
 ### Devices
 
 When you define a device in Rock you specify the IP address that it has.
@@ -83,12 +96,17 @@ lookup and simply dish out the content for the requested device.
 
 ### Block Settings
 
-* `Slide Interval` - The number of seconds between slide transitions.
+You shouldn't need to ever edit the block settings unless you are doing
+something pretty custom, but they are here for you anyway!
+
+* `Slide Interval` - The number of seconds between slide transitions. This can
+be overridden by each individual content channel.
 * `Update Interval` - How often, in seconds, will the block check for changes
 to the content that should be displayed.
 * `Transitions` - The transitions that will be used by this page. If you
 want different devices to have different transitions you will need to
-configure a second page with different block settings.
+configure a second page with different block settings.  This can be overridden
+by each individual content channel.
 * `Content Channel Override` - This is mostly used for testing but you can
 use it if you wish. Setting this overrides the content schedules completely
 and simply serves up the selected content channel at all times.

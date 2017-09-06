@@ -6,6 +6,10 @@ namespace com.shepherdchurch.DigitalSignage.SystemGuid
     {
         public const string DEVICE_CONTENT_SCHEDULES = "1B0DD722-0AE6-4B1C-BCEB-D0C6EEA9718E";
 
+        public const string CONTENT_CHANNEL_SLIDE_INTERVAL = "3380ddbc-69f5-441b-b5e8-7c1a989f9ca3";
+
+        public const string CONTENT_CHANNEL_TRANSITIONS = "a11b0764-5837-413e-9540-aa13df80adc7";
+
         public const string CONTENT_CHANNEL_ITEM_SLIDE = "6A614525-9B8F-4B50-91C4-11DE0817036D";
 
         public const string CONTENT_CHANNEL_ITEM_SLIDE_URL = "4BE30B2C-939A-4331-8F41-E76E1CB38A09";

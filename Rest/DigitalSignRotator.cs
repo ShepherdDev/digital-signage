@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Http;
 
 using Rock;
+using Rock.Attribute;
 using Rock.Data;
 using Rock.Model;
 using Rock.Rest;
@@ -163,6 +164,19 @@ namespace com.shepherdchurch.DigitalSignage.Rest
             var items = contentChannel.Items.Where( i => i.StartDateTime <= DateTime.Now && ( i.ExpireDateTime == null || i.ExpireDateTime > DateTime.Now ) );
 
             //
+            // Get any configuration options from the content channel.
+            //
+            contentChannel.LoadAttributes( rockContext );
+            if ( contentChannel.GetAttributeValue( "com_shepherdchurch_SlideInterval" ).AsInteger() >= 4 )
+            {
+                contents.SlideInterval = contentChannel.GetAttributeValue( "com_shepherdchurch_SlideInterval" ).AsInteger() * 1000;
+            }
+            if ( !string.IsNullOrWhiteSpace( contentChannel.GetAttributeValue( "com_shepherdchurch_Transitions" ) ) )
+            {
+                contents.Transitions = contentChannel.GetAttributeValues( "com_shepherdchurch_Transitions" ).ToArray();
+            }
+
+            //
             // Order the items either manually or by start date time, depending on configuration.
             //
             if ( contentChannel.ItemsManuallyOrdered )
@@ -237,6 +251,10 @@ namespace com.shepherdchurch.DigitalSignage.Rest
             public List<string> Audio { get; set; }
 
             public List<string> Slides { get; set; }
+
+            public int SlideInterval { get; set; }
+
+            public string[] Transitions { get; set; }
 
             public SignContents()
             {

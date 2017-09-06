@@ -178,8 +178,8 @@
           autoplay: false,
           width: $dsrContainer.width(),
           height: $dsrContainer.height(),
-          transitions: settings.transitions,
-          delay: settings.slideInterval,
+          transitions: data.Contents.Transitions && data.Contents.Transitions.length > 0 ? data.Contents.Transitions : settings.transitions,
+          delay: data.Contents.SlideInterval > 0 ? data.Contents.SlideInterval : settings.slideInterval,
           onTransitionEnd: transitionEnd
         });
       }
