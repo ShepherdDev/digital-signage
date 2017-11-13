@@ -68,6 +68,32 @@
 
                     $('.dsrContainer').digitalSign(options);
                 }
+
+                /* Hide the mouse after 2.5 seconds of idle time. */
+                (function () {
+                    var idleMouseTimer;
+                    var forceMouseHide = false;
+                    var $panel = $('#<%= pnlContent.ClientID %>');
+
+                    $panel.css('cursor', 'none');
+
+                    $panel.mousemove(function (ev) {
+                        if (!forceMouseHide) {
+                            $panel.css('cursor', '');
+
+                            clearTimeout(idleMouseTimer);
+
+                            idleMouseTimer = setTimeout(function () {
+                                $panel.css('cursor', 'none');
+
+                                forceMouseHide = true;
+                                setTimeout(function () {
+                                    forceMouseHide = false;
+                                }, 200);
+                            }, 2500);
+                        }
+                    });
+                })();
             });
         </script>
     </ContentTemplate>

@@ -347,7 +347,7 @@ window.flux = {
 				css1 = {
 					'background-image': 'url("'+img1.src+'")',
 					'z-index': 101,
-					'cursor': 'auto'
+					'cursor': 'inherit'
 				};
 
 			// Does this image have an associated link?
