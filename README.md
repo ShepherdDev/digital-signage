@@ -16,7 +16,7 @@ automatically detect those changes and update itself.
 Signage` and turn on Items Manually Ordered.
 2. Create two Content Channel Items. Upload a different image into each item.
 3. Go to your Defined Type page for `Digital Sign Content Schedules`.
-4. Add a new Value titled `Default Slides` and select the `Default Slides`
+4. Add a new Value titled `Default Slides` and select the `Generic Slides`
 content channel.
 5. Go to your Check-in Devices page.
 6. Add a new Device called `Lobby` and set the Device Type to `Digital

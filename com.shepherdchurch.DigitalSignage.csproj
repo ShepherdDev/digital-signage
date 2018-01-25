@@ -89,6 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
+    <None Include="Releases\1\DigitalSignage.plugin" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
