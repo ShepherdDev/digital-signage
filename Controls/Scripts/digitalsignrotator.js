@@ -412,9 +412,9 @@
         }
 
         //
-        // When an audio track ends, start the next.
+        // Move to the next audio file.
         //
-        $audio.on('ended', function () {
+        function nextAudioFile() {
             var index = audioTracks.indexOf($audio.attr('src')) + 1;
 
             if (index >= audioTracks.length) {
@@ -425,6 +425,20 @@
                 $audio.attr('src', audioTracks[index]);
                 $audio.get(0).play();
             }
+        }
+
+        //
+        // When an audio track ends, start the next.
+        //
+        $audio.on('ended', function () {
+            nextAudioFile();
+        });
+
+        //
+        // When an audio track fails to play, start the next with a 1s timer.
+        //
+        $audio.on('error', function (e) {
+            setTimeout(nextAudioFile, 1000);
         });
 
         //
