@@ -23,6 +23,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.DigitalSignage
     [IntegerField( "Update Interval", "How often should the slide rotator check for updates to the content channel. Default is 60 seconds. Must be at least 10 seconds.", false, 0, order: 1 )]
     [CustomCheckboxListField( "Transitions", "Which transitions should be used. If none are selected then all available transitions will be used. If a value is set on the Content Channel then that value will be used instead.", "bars^Bars,blinds^Blinds,blocks^Blocks,blocks2^Blocks 2,dissolve^Dissolve,slide^Slide,zip^Zip,bars3d^Bars 3D,blinds3d^Blinds 3D,cube^Cube 3D,tiles3d^Tiles 3D,turn^Turn 3D", false, order: 2 )]
     [ContentChannelField( "Content Channel Override", "By default the configured schedules on the device will determine what content channel to display. You can override this behavior to always show this content channel no matter what.", false, order: 3 )]
+    [BooleanField( "Enable Device Match By Name", "Enable a match by computer name by doing reverse IP lookup to get computer name based on IP address", true, "", 4, "EnableReverseLookup" )]
     public partial class DigitalSignRotator : RockBlock
     {
         #region Base Method Overrides
@@ -68,7 +69,8 @@ namespace RockWeb.Plugins.com_shepherdchurch.DigitalSignage
             var rockContext = new RockContext();
             var deviceService = new DeviceService( rockContext );
             var digitalDisplayId = DefinedValueCache.Read( SystemGuid.DefinedValue.DEVICE_TYPE_DIGITAL_DISPLAY.AsGuid() ).Id;
-            var ipAddress = this.Context.Request.UserHostAddress;
+            var ipAddress = Request.UserHostAddress;
+            bool enableReverseLookup = GetAttributeValue( "EnableReverseLookup" ).AsBoolean( true );
             Device device = null;
             ContentChannel contentChannel = null;
 
@@ -81,6 +83,21 @@ namespace RockWeb.Plugins.com_shepherdchurch.DigitalSignage
                 device = deviceService.Queryable()
                     .Where( d => d.DeviceTypeValueId == digitalDisplayId && d.IPAddress == ipAddress )
                     .FirstOrDefault();
+
+                if ( device == null && enableReverseLookup )
+                {
+                    try
+                    {
+                        var hostName = System.Net.Dns.GetHostEntry( ipAddress ).HostName;
+                        device = deviceService.Queryable()
+                            .Where( d => d.DeviceTypeValueId == digitalDisplayId && d.IPAddress == hostName )
+                            .FirstOrDefault();
+                    }
+                    catch
+                    {
+                        /* Intentionally ignored. */
+                    }
+                }
             }
 
             if ( !string.IsNullOrWhiteSpace( GetAttributeValue( "ContentChannelOverride" ) ) )
@@ -129,7 +146,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.DigitalSignage
                 pnlError.Visible = true;
 
                 nbError.Text = string.Format( "This kiosk has not been configured in the system.<br />IP address: {0}",
-                    Request.UserHostAddress );
+                    ipAddress );
             }
         }
 
