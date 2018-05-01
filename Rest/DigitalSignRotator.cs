@@ -53,6 +53,8 @@ namespace com.shepherdchurch.DigitalSignage.Rest
 
             if ( device != null )
             {
+                var campuses = device.Locations.Select( l => l.CampusId ).Where( c => c.HasValue && c.Value != 0 ).Select( c => c.Value ).ToList();
+
                 device.LoadAttributes( rockContext );
                 var definedValueGuids = device.GetAttributeValue( "com_shepherdchurch_ContentSchedules" ).SplitDelimitedValues().AsGuidList();
                 List<DefinedValueCache> definedValues = new List<DefinedValueCache>();
@@ -111,7 +113,7 @@ namespace com.shepherdchurch.DigitalSignage.Rest
                         //
                         if ( scheduleActive )
                         {
-                            response.Contents = GetContentChannelItems( contentChannel, rockContext );
+                            response.Contents = GetContentChannelItems( campuses, contentChannel, rockContext );
 
                             break;
                         }
@@ -140,7 +142,7 @@ namespace com.shepherdchurch.DigitalSignage.Rest
 
             if ( contentChannel != null )
             {
-                response.Contents = GetContentChannelItems( contentChannel, rockContext );
+                response.Contents = GetContentChannelItems( new List<int>(), contentChannel, rockContext );
             }
 
             response.GenerateHash();
@@ -158,10 +160,16 @@ namespace com.shepherdchurch.DigitalSignage.Rest
         /// <param name="contentChannel">The content channel whose items are to be displayed.</param>
         /// <param name="rockContext">The context to load any extra data from.</param>
         /// <returns>A SignContents object that contains the formatted data for the client.</returns>
-        private SignContents GetContentChannelItems( ContentChannel contentChannel, RockContext rockContext )
+        private SignContents GetContentChannelItems( List<int> campusIds, ContentChannel contentChannel, RockContext rockContext, List<int> visitedContentChannels = null )
         {
             var contents = new SignContents();
             var items = contentChannel.Items.Where( i => i.StartDateTime <= DateTime.Now && ( i.ExpireDateTime == null || i.ExpireDateTime > DateTime.Now ) );
+
+            //
+            // Add ourselves to the visited content channels so we don't recurse forever.
+            //
+            visitedContentChannels = visitedContentChannels ?? new List<int>();
+            visitedContentChannels.Add( contentChannel.Id );
 
             //
             // Get any configuration options from the content channel.
@@ -193,18 +201,52 @@ namespace com.shepherdchurch.DigitalSignage.Rest
             //
             foreach ( var item in items )
             {
-                Guid guid = Guid.Empty;
-                BinaryFile binaryFile = null;
-                string fileUrl;
-
-                item.LoadAttributes( rockContext );
-
-                //
-                // Now check for a video file.
-                //
-                fileUrl = item.GetAttributeValue( "com_shepherdchurch_SlideUrl" );
-                if ( !string.IsNullOrWhiteSpace( fileUrl ) )
+                if ( item.Attributes == null )
                 {
+                    item.LoadAttributes( rockContext );
+                }
+
+                //
+                // Check for valid campus.
+                //
+                var campusFilter = item.GetAttributeValues( "com_shepherdchurch_CampusFilter" )
+                    .AsGuidOrNullList()
+                    .Where( g => g.HasValue )
+                    .Select( g => CampusCache.Read( g.Value ) )
+                    .Where( c => c != null )
+                    .Select( c => c.Id )
+                    .ToList();
+
+                if ( campusFilter.Count > 0 && campusIds.Count > 0 && campusFilter.Intersect( campusIds ).Count() == 0 )
+                {
+                    continue;
+                }
+
+                //
+                // Check which kind of slide to include.
+                //
+                if ( !string.IsNullOrWhiteSpace( item.GetAttributeValue( "com_shepherdchurch_IncludeContentFrom" ) ) )
+                {
+                    //
+                    // Process the "Include Content From" attribute.
+                    //
+                    var guid = item.GetAttributeValue( "com_shepherdchurch_IncludeContentFrom" ).AsGuid();
+                    var childContentChannel = new ContentChannelService( rockContext ).Get( guid );
+
+                    if ( childContentChannel != null && !visitedContentChannels.Contains( childContentChannel.Id ) )
+                    {
+                        var childContents = GetContentChannelItems( campusIds, childContentChannel, rockContext, visitedContentChannels );
+
+                        contents.Audio.AddRange( childContents.Audio );
+                        contents.Slides.AddRange( childContents.Slides );
+                    }
+                }
+                else if ( !string.IsNullOrWhiteSpace( item.GetAttributeValue( "com_shepherdchurch_SlideUrl" ) ) )
+                {
+                    //
+                    // Process the "Slide Url" attribute.
+                    //
+                    var fileUrl = item.GetAttributeValue( "com_shepherdchurch_SlideUrl" );
                     if ( Regex.IsMatch( fileUrl, "\\.mp3(\\?|$)", RegexOptions.IgnoreCase ) )
                     {
                         contents.Audio.Add( fileUrl );
@@ -217,10 +259,11 @@ namespace com.shepherdchurch.DigitalSignage.Rest
                 else
                 {
                     //
+                    // Process the "Slide" attribute.
                     // Check if it contains either an audio file or an image.
                     //
-                    guid = item.GetAttributeValue( "com_shepherdchurch_Slide" ).AsGuid();
-                    binaryFile = new BinaryFileService( rockContext ).Get( guid );
+                    var guid = item.GetAttributeValue( "com_shepherdchurch_Slide" ).AsGuid();
+                    var binaryFile = new BinaryFileService( rockContext ).Get( guid );
 
                     if ( binaryFile != null && binaryFile.Id != 0 )
                     {

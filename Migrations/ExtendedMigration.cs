@@ -54,5 +54,15 @@ namespace com.shepherdchurch.DigitalSignage.Migrations
                 throw new NullReferenceException( "The Plugin Migration requires valid SqlConnection and SqlTransaction values when executing SQL" );
             }
         }
+
+        protected void Sql( string sql, string key, object value )
+        {
+            Sql( sql, new Dictionary<string, object> { { key, value } } );
+        }
+
+        protected object SqlScalar( string sql, string key, object value )
+        {
+            return SqlScalar( sql, new Dictionary<string, object> { { key, value } } );
+        }
     }
 }
