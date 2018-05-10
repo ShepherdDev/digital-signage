@@ -112,8 +112,8 @@
             // Prepare the container and determine the width and height to work with.
             //
             $fluxContainer = $('<div class="fluxContainer"></div>').appendTo($dsrContainer);
-            var width = $fluxContainer.width();
-            var height = $fluxContainer.height();
+            var width = Math.floor($fluxContainer.width());
+            var height = Math.floor($fluxContainer.height());
             var resizeArgs = '&width=' + width + '&height=' + height + '&bgcolor=black&scale=both';
             var hasVideo = false;
 
