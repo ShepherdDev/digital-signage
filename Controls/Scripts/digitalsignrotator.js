@@ -114,7 +114,7 @@
             $fluxContainer = $('<div class="fluxContainer"></div>').appendTo($dsrContainer);
             var width = Math.floor($fluxContainer.width());
             var height = Math.floor($fluxContainer.height());
-            var resizeArgs = '&width=' + width + '&height=' + height + '&bgcolor=black&scale=both';
+            var resizeArgs = '&width=' + width + '&height=' + height + '&bgcolor=black&scale=both&mode=pad';
             var hasVideo = false;
 
             //
