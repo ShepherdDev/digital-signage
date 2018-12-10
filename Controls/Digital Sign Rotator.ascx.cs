@@ -68,7 +68,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.DigitalSignage
         {
             var rockContext = new RockContext();
             var deviceService = new DeviceService( rockContext );
-            var digitalDisplayId = DefinedValueCache.Read( SystemGuid.DefinedValue.DEVICE_TYPE_DIGITAL_DISPLAY.AsGuid() ).Id;
+            var digitalDisplayId = DefinedValueCache.Get( SystemGuid.DefinedValue.DEVICE_TYPE_DIGITAL_DISPLAY.AsGuid() ).Id;
             var ipAddress = Request.UserHostAddress;
             bool enableReverseLookup = GetAttributeValue( "EnableReverseLookup" ).AsBoolean( true );
             Device device = null;

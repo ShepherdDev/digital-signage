@@ -64,7 +64,7 @@ namespace com.shepherdchurch.DigitalSignage.Rest
                 //
                 foreach ( var definedValueGuid in definedValueGuids )
                 {
-                    var definedValue = DefinedValueCache.Read( definedValueGuid );
+                    var definedValue = DefinedValueCache.Get( definedValueGuid );
 
                     if ( definedValue != null )
                     {
@@ -99,7 +99,7 @@ namespace com.shepherdchurch.DigitalSignage.Rest
                             {
                                 var schedule = scheduleService.Get( guid );
 
-                                if ( schedule.IsScheduleActive )
+                                if ( schedule.WasScheduleActive( RockDateTime.Now ) )
                                 {
                                     scheduleActive = true;
                                     break;
@@ -212,7 +212,7 @@ namespace com.shepherdchurch.DigitalSignage.Rest
                 var campusFilter = item.GetAttributeValues( "com_shepherdchurch_CampusFilter" )
                     .AsGuidOrNullList()
                     .Where( g => g.HasValue )
-                    .Select( g => CampusCache.Read( g.Value ) )
+                    .Select( g => CampusCache.Get( g.Value ) )
                     .Where( c => c != null )
                     .Select( c => c.Id )
                     .ToList();
