@@ -49,9 +49,9 @@
             //
             // If we have new slide show data then lets load it up.
             //
-            if (newSlideShowData != null) {
+            if (newSlideShowData !== null) {
                 pausePlayback(function () {
-                    if ($fluxContainer != null) {
+                    if ($fluxContainer !== null) {
                         $fluxContainer.remove();
                         $fluxContainer = null;
                     }
@@ -79,7 +79,7 @@
         function pausePlayback(callback) {
             $audio.animate({ volume: 0 }, settings.animationDuration);
 
-            if (flux != null) {
+            if (flux !== null) {
                 //
                 // Stop flex and cleanup.
                 //
@@ -121,14 +121,27 @@
             // Setup all the image nodes.
             //
             for (var i = 0; i < data.Contents.Slides.length; i++) {
-                var video = parseVideo(data.Contents.Slides[i]);
+                var slide = data.Contents.Slides[i];
+                var video = parseVideo(slide.Url);
 
-                if (video.type != null) {
-                    $('<img src="/Plugins/com_shepherdchurch/DigitalSignage/Assets/4k-black.png" data-video="' + data.Contents.Slides[i] + '" />').appendTo($fluxContainer);
+                if (video.type !== null) {
+                    var $item = $('<img src="/Plugins/com_shepherdchurch/DigitalSignage/Assets/4k-black.png" data-video="' + slide.Url + '" />');
+
+                    if (slide.Duration > 0) {
+                        $item.attr('data-duration', slide.Duration);
+                    }
+
+                    $item.appendTo($fluxContainer);
                     hasVideo = true;
                 }
                 else {
-                    $('<img src="' + data.Contents.Slides[i] + resizeArgs + '" />').appendTo($fluxContainer);
+                    $item = $('<img src="' + slide.Url + resizeArgs + '" />');
+
+                    if (slide.Duration > 0) {
+                        $item.attr('data-duration', slide.Duration);
+                    }
+                    
+                    $item.appendTo($fluxContainer);
                 }
             }
 
@@ -136,7 +149,7 @@
             // If we have a single slide and it is a video slide then add another black slide
             // as a placeholder for transitions.
             //
-            if ($fluxContainer.find('img').length == 1 && hasVideo) {
+            if ($fluxContainer.find('img').length === 1 && hasVideo) {
                 $('<img src="/Plugins/com_shepherdchurch/DigitalSignage/Assets/4k-black.png" />').appendTo($fluxContainer);
             }
 
@@ -162,7 +175,7 @@
             // Prepare the audio tracks.
             //
             audioTracks = [];
-            for (var i = 0; i < data.Contents.Audio.length; i++) {
+            for (i = 0; i < data.Contents.Audio.length; i++) {
                 audioTracks.push(data.Contents.Audio[i]);
             }
 
@@ -182,11 +195,17 @@
         // to playing the video. Also check if we have new data to load in.
         //
         function transitionEnd(data) {
-            if (newSlideShowData != null) {
+            if (newSlideShowData !== null) {
                 playOrSetup();
             }
             else if ($(data.currentImage).data('video')) {
                 pausePlayback(function () { playVideo($(data.currentImage).data('video')); });
+            }
+            else if ($(data.currentImage).data('duration') > 0) {
+                flux.stop();
+                setTimeout(function () {
+                    playOrSetup(true);
+                }, $(data.currentImage).data('duration') * 1000);
             }
         }
 
@@ -198,7 +217,7 @@
             var type = null;
             var id = null;
 
-            if (url.match(/(https?:\/\/|).*(mp4|m4v|mov)(\?|$)/) != null) {
+            if (url.match(/(https?:\/\/|).*(mp4|m4v|mov)(\?|$)/) !== null) {
                 type = 'mp4';
                 id = url;
             }
@@ -235,13 +254,13 @@
         function playVideo(videoUrl) {
             var video = parseVideo(videoUrl);
 
-            if (video.type == 'vimeo') {
+            if (video.type === 'vimeo') {
                 playVimeoVideo(video.id);
             }
-            else if (video.type == 'youtube') {
+            else if (video.type === 'youtube') {
                 playYoutubeVideo(video.id);
             }
-            else if (video.type == 'mp4') {
+            else if (video.type === 'mp4') {
                 playMp4Video(video.id);
             }
             else {
@@ -400,12 +419,12 @@
 
             $.ajax(url)
                 .done(function (data) {
-                    if (data.Hash == lastHash) {
+                    if (data.Hash === lastHash) {
                         return;
                     }
 
                     newSlideShowData = data;
-                    if (flux == null) {
+                    if (flux === null) {
                         playOrSetup();
                     }
                 });

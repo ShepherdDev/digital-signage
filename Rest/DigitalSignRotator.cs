@@ -222,6 +222,8 @@ namespace com.shepherdchurch.DigitalSignage.Rest
                     continue;
                 }
 
+                var duration = item.GetAttributeValue( "com_shepherdchurch_Duration" ).AsIntegerOrNull();
+
                 //
                 // Check which kind of slide to include.
                 //
@@ -253,7 +255,7 @@ namespace com.shepherdchurch.DigitalSignage.Rest
                     }
                     else
                     {
-                        contents.Slides.Add( fileUrl );
+                        contents.Slides.Add( new Slide( fileUrl, duration ) );
                     }
                 }
                 else
@@ -273,7 +275,7 @@ namespace com.shepherdchurch.DigitalSignage.Rest
                         }
                         else if ( binaryFile.MimeType.StartsWith( "image/" ) )
                         {
-                            contents.Slides.Add( VirtualPathUtility.ToAbsolute( string.Format( "~/GetImage.ashx?id={0}", binaryFile.Id ) ) );
+                            contents.Slides.Add( new Slide( VirtualPathUtility.ToAbsolute( string.Format( "~/GetImage.ashx?id={0}", binaryFile.Id ) ), duration ) );
                         }
                     }
                 }
@@ -286,6 +288,23 @@ namespace com.shepherdchurch.DigitalSignage.Rest
 
         #region Utility Classes
 
+        public class Slide
+        {
+            public string Url { get; set; }
+
+            public int? Duration { get; set; }
+
+            public Slide()
+            {
+            }
+
+            public Slide( string url, int? duration )
+            {
+                Url = url;
+                Duration = duration;
+            }
+        }
+
         /// <summary>
         /// This is a helper class for returning the API data to the client.
         /// </summary>
@@ -293,7 +312,7 @@ namespace com.shepherdchurch.DigitalSignage.Rest
         {
             public List<string> Audio { get; set; }
 
-            public List<string> Slides { get; set; }
+            public List<Slide> Slides { get; set; }
 
             public int SlideInterval { get; set; }
 
@@ -302,7 +321,7 @@ namespace com.shepherdchurch.DigitalSignage.Rest
             public SignContents()
             {
                 Audio = new List<string>();
-                Slides = new List<string>();
+                Slides = new List<Slide>();
             }
         }
 
