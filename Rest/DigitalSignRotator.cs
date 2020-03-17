@@ -16,13 +16,13 @@ using Rock.Web.Cache;
 
 namespace com.shepherdchurch.DigitalSignage.Rest
 {
-    public class DigitalSignRotatorController : ApiController, IHasCustomRoutes
+    public class DigitalSignRotatorController : ApiController, IHasCustomHttpRoutes
     {
         /// <summary>
         /// Add in the routes that are supported by this plugin.
         /// </summary>
         /// <param name="routes">The RouteCollection that we should add any additional routes to.</param>
-        public void AddRoutes( System.Web.Routing.RouteCollection routes )
+        public void AddRoutes( HttpRouteCollection routes )
         {
             routes.MapHttpRoute(
                 name: "ShepherdChurchDigitalSignageSlides",
