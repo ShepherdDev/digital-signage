@@ -16,23 +16,8 @@ using Rock.Web.Cache;
 
 namespace com.shepherdchurch.DigitalSignage.Rest
 {
-    public class DigitalSignRotatorController : ApiController, IHasCustomHttpRoutes
+    public class DigitalSignRotatorController : ApiControllerBase
     {
-        /// <summary>
-        /// Add in the routes that are supported by this plugin.
-        /// </summary>
-        /// <param name="routes">The RouteCollection that we should add any additional routes to.</param>
-        public void AddRoutes( HttpRouteCollection routes )
-        {
-            routes.MapHttpRoute(
-                name: "ShepherdChurchDigitalSignageSlides",
-                routeTemplate: "api/com.shepherdchurch/DigitalSignage/{type}/{id}",
-                defaults: new
-                {
-                    controller = "DigitalSignRotator"
-                } );
-        }
-
         #region API Methods
 
         /// <summary>
@@ -40,6 +25,7 @@ namespace com.shepherdchurch.DigitalSignage.Rest
         /// </summary>
         /// <param name="id">The device identifier whose content should be retrieved.</param>
         /// <returns>An object that contains the content and the content hash for change detection.</returns>
+        [HttpGet]
         [System.Web.Http.Route( "api/com.shepherdchurch/DigitalSignage/Device/{id}" )]
         public SlidesResponse GetSlides( string id )
         {
@@ -131,6 +117,7 @@ namespace com.shepherdchurch.DigitalSignage.Rest
         /// </summary>
         /// <param name="id">The ContentChannel identifier whose content will be displayed.</param>
         /// <returns>An object that contains the content and the content hash for change detection.</returns>
+        [HttpGet]
         [System.Web.Http.Route( "api/com.shepherdchurch/DigitalSignage/ContentChannel/{id}" )]
         public SlidesResponse GetContentChannel( string id )
         {
