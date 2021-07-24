@@ -152,7 +152,8 @@ namespace com.shepherdchurch.DigitalSignage.Rest
             var contents = new SignContents();
             var items = contentChannel.Items
                 .Where( i => i.StartDateTime <= RockDateTime.Now )
-                .Where( i => i.ExpireDateTime == null || i.ExpireDateTime > RockDateTime.Now );
+                .Where( i => i.ExpireDateTime == null || i.ExpireDateTime > RockDateTime.Now )
+                .Where( i => !contentChannel.RequiresApproval || i.Status == ContentChannelItemStatus.Approved );
 
             //
             // Add ourselves to the visited content channels so we don't recurse forever.
