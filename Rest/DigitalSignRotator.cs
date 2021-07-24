@@ -150,7 +150,9 @@ namespace com.shepherdchurch.DigitalSignage.Rest
         private SignContents GetContentChannelItems( List<int> campusIds, ContentChannel contentChannel, RockContext rockContext, List<int> visitedContentChannels = null )
         {
             var contents = new SignContents();
-            var items = contentChannel.Items.Where( i => i.StartDateTime <= DateTime.Now && ( i.ExpireDateTime == null || i.ExpireDateTime > DateTime.Now ) );
+            var items = contentChannel.Items
+                .Where( i => i.StartDateTime <= RockDateTime.Now )
+                .Where( i => i.ExpireDateTime == null || i.ExpireDateTime > RockDateTime.Now );
 
             //
             // Add ourselves to the visited content channels so we don't recurse forever.
