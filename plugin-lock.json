@@ -1,0 +1,18 @@
+{
+  "lockFileVersion": 1,
+  "versions": [
+    {
+      "version": "1.4.0",
+      "installedFiles": [
+        "Bin/com.shepherdchurch.DigitalSignage.dll",
+        "Plugins/com_shepherdchurch/DigitalSignage/Assets/4k-black.png",
+        "Plugins/com_shepherdchurch/DigitalSignage/Digital Sign Rotator.ascx",
+        "Plugins/com_shepherdchurch/DigitalSignage/Digital Sign Rotator.ascx.cs",
+        "Plugins/com_shepherdchurch/DigitalSignage/Scripts/digitalsignrotator.js",
+        "Plugins/com_shepherdchurch/DigitalSignage/Scripts/flux.js",
+        "Plugins/com_shepherdchurch/DigitalSignage/Scripts/flux.min.js",
+        "Plugins/com_shepherdchurch/DigitalSignage/Styles/digitalsignrotator.css"
+      ]
+    }
+  ]
+}
