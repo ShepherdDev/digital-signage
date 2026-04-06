@@ -1,0 +1,37 @@
+{
+    "name": "com.shepherdchurch.digitalsignage.obsidian",
+    "private": true,
+    "scripts": {
+        "build": "npm run typecheck && obsidian-build",
+        "typecheck": "vue-tsc --noEmit -p src",
+        "watch": "obsidian-build --watch",
+        "clean": "rimraf dist",
+        "viewmodels": "rock-dev-tool generate viewmodels ../com.shepherdchurch.DigitalSignage/bin/Debug/net472/com.shepherdchurch.DigitalSignage.dll -o src",
+        "test": "jest"
+    },
+    "dependencies": {
+        "@rockrms/obsidian-framework": "^17.6.1"
+    },
+    "devDependencies": {
+        "@sparkdevnetwork/eslint-config-rock-recommended": "^1.0.7",
+        "@sparkdevnetwork/obsidian-build-tools": "^1.0.7",
+        "@types/jest": "^29.5.4",
+        "@types/node": "^20.5.7",
+        "@typescript-eslint/eslint-plugin": "^6.5.0",
+        "@typescript-eslint/parser": "^6.5.0",
+        "@vue/test-utils": "^2.4.1",
+        "@vue/vue3-jest": "^29.2.5",
+        "eslint": "^8.48.0",
+        "eslint-plugin-vue": "^9.17.0",
+        "jest": "^29.6.4",
+        "jest-editor-support": "^31.1.1",
+        "jest-environment-jsdom": "^29.6.4",
+        "rimraf": "^5.0.1",
+        "ts-jest": "^29.1.1",
+        "tslib": "^2.6.2",
+        "typescript": "^5.5.4",
+        "vue": "^3.2.0",
+        "vue-eslint-parser": "^9.3.1",
+        "vue-tsc": "^2.1.6"
+    }
+}
