@@ -1,0 +1,99 @@
+<template>
+    <NotificationBox v-if="config.errorMessage" alertType="danger">
+        {{ config.errorMessage }}
+    </NotificationBox>
+
+    <div v-else ref="containerElement" class="dsrContainer"></div>
+</template>
+
+<script setup lang="ts">
+import NotificationBox from "@Obsidian/Controls/notificationBox.obs";
+import { useConfigurationValues, useInvokeBlockAction, useReloadBlock } from "@Obsidian/Utility/block";
+import { DigitalSignRotatorConfigurationBag } from "./viewModels";
+import { onBeforeUnmount, onMounted, ref } from "vue";
+
+const config = useConfigurationValues<DigitalSignRotatorConfigurationBag>();
+const invokeBlockAction = useInvokeBlockAction();
+const reloadBlock = useReloadBlock();
+
+const containerElement = ref<HTMLDivElement>();
+let idleMouseTimer: number | undefined;
+let forceMouseHide: boolean = false;
+
+// #region Functions
+
+function updateFeed(): { done: (fn: (data: unknown) => void) => void } {
+    return {
+        done: async (fn: (data: unknown) => void) => {
+            console.log("Updating feed for Digital Signage Rotator");
+            if (config.contentChannelId) {
+                const result = await invokeBlockAction("GetContentChannelFeed", { contentChannelId: config.contentChannelId });
+
+                fn(result.data);
+            }
+            else {
+                const result = await invokeBlockAction("GetDeviceFeed", { deviceId: config.deviceId });
+
+                fn(result.data);
+            }
+        },
+    };
+}
+
+// #endregion
+
+// #region Event Handlers
+
+function onMouseMove(): void {
+    if (!containerElement.value) {
+        return;
+    }
+
+    if (!forceMouseHide) {
+        containerElement.value.style.cursor = "";
+
+        clearTimeout(idleMouseTimer);
+
+        idleMouseTimer = setTimeout(function () {
+            if (containerElement.value) {
+                containerElement.value.style.cursor = "none";
+            }
+
+            forceMouseHide = true;
+            setTimeout(function () {
+                forceMouseHide = false;
+            }, 200);
+        }, 2500);
+    }
+}
+
+// #endregion
+
+if (config.errorMessage) {
+    setTimeout(reloadBlock, 10000);
+}
+
+onMounted(() => {
+    if (containerElement.value) {
+        containerElement.value.style.cursor = "none";
+        containerElement.value.addEventListener("mousemove", onMouseMove);
+    }
+
+    if (!config.errorMessage) {
+        const options: Record<string, unknown> = {
+            slideInterval: config.slideInterval ?? undefined,
+            updateInterval: config.updateInterval ?? undefined,
+            transitions: config.transitions && config.transitions.length > 0 ? config.transitions : undefined,
+            audio: config.isAudioEnabled,
+            updateFeed,
+        };
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (window["$"] as any)(".dsrContainer").digitalSign(options);
+    }
+});
+
+onBeforeUnmount(() => {
+    containerElement.value?.removeEventListener("mousemove", onMouseMove);
+});
+</script>

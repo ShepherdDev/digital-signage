@@ -4,7 +4,7 @@
         "code": "com.shepherdchurch"
     },
     "name": "Digital Signage",
-    "version": "1.4.0",
+    "version": "2.0.0",
     "include": {
         "com.shepherdchurch.DigitalSignage/bin/Release/net472/com.shepherdchurch.DigitalSignage.dll": "Bin/",
         "com.shepherdchurch.DigitalSignage.Obsidian/dist/**": "Plugins/com_shepherdchurch/DigitalSignage"

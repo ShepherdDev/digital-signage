@@ -12,7 +12,7 @@ namespace com.shepherdchurch.DigitalSignage.Migrations
             var contentChannelTypeId = ( int ) SqlScalar( "SELECT [Id] FROM [ContentChannelType] WHERE [Guid] = @Guid",
                 new Dictionary<string, object> { { "@Guid", SystemGuid.ContentChannelType.DIGITAL_SIGNAGE } } );
 
-            RockMigrationHelper.AddEntityAttribute( "Rock.Model.ContentChannelItem", Rock.SystemGuid.FieldType.INTEGER,
+            RockMigrationHelper.AddOrUpdateEntityAttribute( "Rock.Model.ContentChannelItem", Rock.SystemGuid.FieldType.INTEGER,
                 "ContentChannelTypeId", contentChannelTypeId.ToString(), "Duration", string.Empty,
                 "Overrides the standard slide duration for this single slide.", 0, string.Empty,
                 SystemGuid.Attribute.CONTENT_CHANNEL_ITEM_DURATION, "com_shepherdchurch_Duration" );

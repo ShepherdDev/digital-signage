@@ -15,7 +15,7 @@ namespace com.shepherdchurch.DigitalSignage.Migrations
             //
             // Add the attributes to the content channel.
             //
-            RockMigrationHelper.AddEntityAttribute( "Rock.Model.ContentChannelItem", Rock.SystemGuid.FieldType.SINGLE_SELECT,
+            RockMigrationHelper.AddOrUpdateEntityAttribute( "Rock.Model.ContentChannelItem", Rock.SystemGuid.FieldType.SINGLE_SELECT,
                 "ContentChannelTypeId", contentChannelTypeId.ToString(), "Include Content From", string.Empty,
                 "Includes the content from the specified content channel, takes precedence over Slide and Slide Url fields.",
                 2, string.Empty,
@@ -26,7 +26,7 @@ namespace com.shepherdchurch.DigitalSignage.Migrations
                 string.Format( "SELECT [Guid] AS [Value], [Name] AS [Text] FROM [ContentChannel] WHERE [ContentChannelTypeId] = {0}", contentChannelTypeId ),
                 SystemGuid.AttributeQualifier.CONTENT_CHANNEL_ITEM_INCLUDE_CONTENT_FROM_VALUES );
 
-            RockMigrationHelper.AddEntityAttribute( "Rock.Model.ContentChannelItem", Rock.SystemGuid.FieldType.CAMPUSES,
+            RockMigrationHelper.AddOrUpdateEntityAttribute( "Rock.Model.ContentChannelItem", Rock.SystemGuid.FieldType.CAMPUSES,
                 "ContentChannelTypeId", contentChannelTypeId.ToString(), "Campus Filter", string.Empty,
                 "Which campuses this slide will be displayed at. If nothing is selected then all campuses are active.",
                 3, string.Empty,

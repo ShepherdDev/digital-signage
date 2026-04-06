@@ -24,12 +24,12 @@ INSERT INTO [ContentChannelType]
             //
             // Add the attributes to the content channel.
             //
-            RockMigrationHelper.AddEntityAttribute( "Rock.Model.ContentChannelItem", Rock.SystemGuid.FieldType.IMAGE,
+            RockMigrationHelper.AddOrUpdateEntityAttribute( "Rock.Model.ContentChannelItem", Rock.SystemGuid.FieldType.IMAGE,
                 "ContentChannelTypeId", contentChannelTypeId.ToString(), "Slide", string.Empty,
                 "The image to be displayed on screen.", 0, string.Empty,
                 SystemGuid.Attribute.CONTENT_CHANNEL_ITEM_SLIDE, "com_shepherdchurch_Slide" );
 
-            RockMigrationHelper.AddEntityAttribute( "Rock.Model.ContentChannelItem", Rock.SystemGuid.FieldType.URL_LINK,
+            RockMigrationHelper.AddOrUpdateEntityAttribute( "Rock.Model.ContentChannelItem", Rock.SystemGuid.FieldType.URL_LINK,
                 "ContentChannelTypeId", contentChannelTypeId.ToString(), "Video", string.Empty,
                 "The image to be displayed on screen.", 0, string.Empty,
                 SystemGuid.Attribute.CONTENT_CHANNEL_ITEM_SLIDE_URL, "com_shepherdchurch_Video" );
@@ -61,7 +61,7 @@ INSERT INTO [ContentChannelType]
             //
             // Add the device type attribute.
             //
-            RockMigrationHelper.AddEntityAttribute( "Rock.Model.Device", Rock.SystemGuid.FieldType.MULTI_SELECT,
+            RockMigrationHelper.AddOrUpdateEntityAttribute( "Rock.Model.Device", Rock.SystemGuid.FieldType.MULTI_SELECT,
                 "DeviceTypeValueId", deviceTypeValueId.ToString(), "Content Schedules", string.Empty,
                 "Available content schedules to display on this device. The first active content channel will be used.", 0, string.Empty,
                 SystemGuid.Attribute.DEVICE_CONTENT_SCHEDULES, "com_shepherdchurch_ContentSchedules" );

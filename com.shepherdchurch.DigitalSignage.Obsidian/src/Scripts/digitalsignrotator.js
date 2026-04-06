@@ -4,17 +4,16 @@
         var $fluxContainer = null;
         var flux = null;
         var audioTracks = [];
-        var lastHash = '';
-        var $audio = $('<audio />').appendTo($dsrContainer);
+        var lastHash = "";
+        var $audio = $("<audio />").appendTo($dsrContainer);
         var newSlideShowData = null;
         var settings = $.extend({
             animationDuration: 400,
             slideInterval: 8000,
             updateInterval: 60000,
-            transitions: ['bars', 'blinds', 'blocks', 'blocks2', 'dissolve', 'slide', 'zip', 'bars3d', 'blinds3d', 'cube', 'tiles3d', 'turn'],
-            device: 0,
-            contentChannel: null,
-            audio: true
+            transitions: ["bars", "blinds", "blocks", "blocks2", "dissolve", "slide", "zip", "bars3d", "blinds3d", "cube", "tiles3d", "turn"],
+            audio: true,
+            updateFeed: null,
         }, options);
 
         //
@@ -22,7 +21,7 @@
         //
         function play(nextSlide) {
             if (flux && !flux.isPlaying()) {
-                if ($fluxContainer.css('opacity') != 1 || !$fluxContainer.is(':visible')) {
+                if ($fluxContainer.css("opacity") != 1 || !$fluxContainer.is(":visible")) {
                     $fluxContainer.fadeIn(settings.animationDuration, function () {
                         if (nextSlide) {
                             flux.next();
@@ -36,7 +35,7 @@
                 flux.start();
             }
 
-            if ($audio.attr('src') && settings.audio) {
+            if ($audio.attr("src") && settings.audio) {
                 $audio.get(0).play();
                 $audio.animate({ volume: 1 }, settings.animationDuration);
             }
@@ -57,8 +56,8 @@
                     }
 
                     flux = null;
-                    if ($audio.attr('src')) {
-                        $audio.attr('src', '');
+                    if ($audio.attr("src")) {
+                        $audio.attr("src", "");
                     }
 
                     setup(newSlideShowData);
@@ -114,33 +113,33 @@
             $fluxContainer = $('<div class="fluxContainer"></div>').appendTo($dsrContainer);
             var width = Math.floor($fluxContainer.width());
             var height = Math.floor($fluxContainer.height());
-            var resizeArgs = '&width=' + width + '&height=' + height + '&bgcolor=black&scale=both&mode=pad';
+            var resizeArgs = "&width=" + width + "&height=" + height + "&bgcolor=black&scale=both&mode=pad";
             var hasVideo = false;
 
             //
             // Setup all the image nodes.
             //
-            for (var i = 0; i < data.Contents.Slides.length; i++) {
-                var slide = data.Contents.Slides[i];
-                var video = parseVideo(slide.Url);
+            for (var i = 0; i < data.contents.slides.length; i++) {
+                var slide = data.contents.slides[i];
+                var video = parseVideo(slide.url);
 
                 if (video.type !== null) {
-                    var $item = $('<img src="/Plugins/com_shepherdchurch/DigitalSignage/Assets/4k-black.png" data-video="' + slide.Url + '" />');
+                    var $item = $('<img src="/Plugins/com_shepherdchurch/DigitalSignage/Assets/4k-black.png" data-video="' + slide.url + '" />');
 
-                    if (slide.Duration > 0) {
-                        $item.attr('data-duration', slide.Duration);
+                    if (slide.duration > 0) {
+                        $item.attr("data-duration", slide.duration);
                     }
 
                     $item.appendTo($fluxContainer);
                     hasVideo = true;
                 }
                 else {
-                    $item = $('<img src="' + slide.Url + resizeArgs + '" />');
+                    $item = $('<img src="' + slide.url + resizeArgs + '" />');
 
-                    if (slide.Duration > 0) {
-                        $item.attr('data-duration', slide.Duration);
+                    if (slide.duration > 0) {
+                        $item.attr("data-duration", slide.duration);
                     }
-                    
+
                     $item.appendTo($fluxContainer);
                 }
             }
@@ -149,24 +148,24 @@
             // If we have a single slide and it is a video slide then add another black slide
             // as a placeholder for transitions.
             //
-            if ($fluxContainer.find('img').length === 1 && hasVideo) {
+            if ($fluxContainer.find("img").length === 1 && hasVideo) {
                 $('<img src="/Plugins/com_shepherdchurch/DigitalSignage/Assets/4k-black.png" />').appendTo($fluxContainer);
             }
 
             //
             // If there is more than 1 slide element then begin the flux transitions.
             //
-            if ($fluxContainer.find('img').length >= 2) {
+            if ($fluxContainer.find("img").length >= 2) {
                 //
                 // Initialize the flux slider.
                 //
-                flux = new window.flux.slider('.fluxContainer', {
+                flux = new window.flux.slider(".fluxContainer", {
                     pagination: false,
                     autoplay: false,
                     width: $dsrContainer.width(),
                     height: $dsrContainer.height(),
-                    transitions: data.Contents.Transitions && data.Contents.Transitions.length > 0 ? data.Contents.Transitions : settings.transitions,
-                    delay: data.Contents.SlideInterval > 0 ? data.Contents.SlideInterval : settings.slideInterval,
+                    transitions: data.contents.transitions && data.contents.transitions.length > 0 ? data.contents.transitions : settings.transitions,
+                    delay: data.contents.slideInterval > 0 ? data.contents.slideInterval : settings.slideInterval,
                     onTransitionEnd: transitionEnd
                 });
             }
@@ -175,19 +174,19 @@
             // Prepare the audio tracks.
             //
             audioTracks = [];
-            for (i = 0; i < data.Contents.Audio.length; i++) {
-                audioTracks.push(data.Contents.Audio[i]);
+            for (i = 0; i < data.contents.audio.length; i++) {
+                audioTracks.push(data.contents.audio[i]);
             }
 
             //
             // Initialize the audio playback.
             //
             if (audioTracks.length > 0 && settings.audio) {
-                $audio.attr('src', audioTracks[0]);
-                $audio.prop('volume', 1);
+                $audio.attr("src", audioTracks[0]);
+                $audio.prop("volume", 1);
             }
 
-            lastHash = data.Hash;
+            lastHash = data.hash;
         }
 
         //
@@ -198,14 +197,16 @@
             if (newSlideShowData !== null) {
                 playOrSetup();
             }
-            else if ($(data.currentImage).data('video')) {
-                pausePlayback(function () { playVideo($(data.currentImage).data('video')); });
+            else if ($(data.currentImage).data("video")) {
+                pausePlayback(function () {
+ playVideo($(data.currentImage).data("video")); 
+});
             }
-            else if ($(data.currentImage).data('duration') > 0) {
+            else if ($(data.currentImage).data("duration") > 0) {
                 flux.stop();
                 setTimeout(function () {
                     playOrSetup(true);
-                }, $(data.currentImage).data('duration') * 1000);
+                }, $(data.currentImage).data("duration") * 1000);
             }
         }
 
@@ -218,7 +219,7 @@
             var id = null;
 
             if (url.match(/(https?:\/\/|).*(mp4|m4v|mov)(\?|$)/) !== null) {
-                type = 'mp4';
+                type = "mp4";
                 id = url;
             }
             else {
@@ -233,10 +234,11 @@
                 //   - //player.vimeo.com/video/25451551
 
                 url.match(/(http:\/\/|https:\/\/|)(player.|www.)?(vimeo\.com|youtu(be\.com|\.be|be\.googleapis\.com))\/(video\/|embed\/|watch\?v=|v\/)?([A-Za-z0-9._%-]*)(\&\S+)?/);
-                if (RegExp.$3.indexOf('youtu') > -1) {
-                    type = 'youtube';
-                } else if (RegExp.$3.indexOf('vimeo') > -1) {
-                    type = 'vimeo';
+                if (RegExp.$3.indexOf("youtu") > -1) {
+                    type = "youtube";
+                }
+ else if (RegExp.$3.indexOf("vimeo") > -1) {
+                    type = "vimeo";
                 }
                 id = RegExp.$6;
             }
@@ -254,13 +256,13 @@
         function playVideo(videoUrl) {
             var video = parseVideo(videoUrl);
 
-            if (video.type === 'vimeo') {
+            if (video.type === "vimeo") {
                 playVimeoVideo(video.id);
             }
-            else if (video.type === 'youtube') {
+            else if (video.type === "youtube") {
                 playYoutubeVideo(video.id);
             }
-            else if (video.type === 'mp4') {
+            else if (video.type === "mp4") {
                 playMp4Video(video.id);
             }
             else {
@@ -273,7 +275,7 @@
         //
         function playVimeoVideo(videoId) {
             var $vid = null;
-            var videoUrl = '//player.vimeo.com/video/' + videoId + '?autoplay=1';
+            var videoUrl = "//player.vimeo.com/video/" + videoId + "?autoplay=1";
 
             // Restart playback if the iframe timed out or video finished.
             function restartPlayback() {
@@ -285,9 +287,11 @@
             // Load the video in an iframe. If it doesn't load within 10 seconds assume there was
             // an error and restart playback.
             //
-            var timer = setTimeout(function () { restartPlayback(); }, 10000);
+            var timer = setTimeout(function () {
+ restartPlayback(); 
+}, 10000);
             $vid = $('<iframe src="' + videoUrl + '" frameborder="0"><iframe>').hide();
-            $vid.on('load', function () {
+            $vid.on("load", function () {
                 var player = new Vimeo.Player($vid.get(0));
 
                 if (!settings.audio) {
@@ -300,10 +304,12 @@
                     // seconds.
                     //
                     clearTimeout(timer);
-                    timer = setTimeout(function () { restartPlayback(); }, (duration + 15) * 1000);
+                    timer = setTimeout(function () {
+ restartPlayback(); 
+}, (duration + 15) * 1000);
                 });
 
-                player.on('ended', function () {
+                player.on("ended", function () {
                     clearTimeout(timer);
                     restartPlayback();
                 });
@@ -319,7 +325,7 @@
         //
         function playYoutubeVideo(videoId) {
             var $vid = null;
-            var videoUrl = '//www.youtube.com/embed/' + videoId + '?enablejsapi=1&autoplay=1&rel=0&controls=0&fs=0&modestbranding=1&showinfo=0';
+            var videoUrl = "//www.youtube.com/embed/" + videoId + "?enablejsapi=1&autoplay=1&rel=0&controls=0&fs=0&modestbranding=1&showinfo=0";
 
             // Restart playback if the iframe timed out or video finished.
             function restartPlayback() {
@@ -334,7 +340,9 @@
                     // seconds.
                     //
                     clearTimeout(timer);
-                    timer = setTimeout(function () { restartPlayback(); }, (player.getDuration() + 15) * 1000);
+                    timer = setTimeout(function () {
+ restartPlayback(); 
+}, (player.getDuration() + 15) * 1000);
 
                     if (!settings.audio) {
                         player.mute();
@@ -350,12 +358,16 @@
             // Load the video in an iframe. If it doesn't load within 10 seconds assume there was
             // an error and restart playback.
             //
-            var timer = setTimeout(function () { restartPlayback(); }, 10000);
+            var timer = setTimeout(function () {
+ restartPlayback(); 
+}, 10000);
             $vid = $('<iframe id="dsrYoutube" src="' + videoUrl + '" frameborder="0"><iframe>').hide();
-            $vid.on('load', function () {
-                var player = new YT.Player('dsrYoutube', {
+            $vid.on("load", function () {
+                var player = new YT.Player("dsrYoutube", {
                     events: {
-                        'onStateChange': function (event) { onPlayerStateChange(player, event); }
+                        "onStateChange": function (event) {
+ onPlayerStateChange(player, event); 
+}
                     }
                 });
 
@@ -382,17 +394,21 @@
             // Load the video in an iframe. If it doesn't load within 10 seconds assume there was
             // an error and restart playback.
             //
-            var timer = setTimeout(function () { restartPlayback(); }, 10000);
+            var timer = setTimeout(function () {
+ restartPlayback(); 
+}, 10000);
             $vid = $('<video autoplay="true" src="' + videoUrl + '"></video>').hide();
-            $vid.on('play', function () {
+            $vid.on("play", function () {
                 //
                 // Clear the old timer and set a new timer for the duration of the video plus 15
                 // seconds.
                 //
                 clearTimeout(timer);
-                timer = setTimeout(function () { restartPlayback(); }, ($vid.get(0).duration + 15) * 1000);
+                timer = setTimeout(function () {
+ restartPlayback(); 
+}, ($vid.get(0).duration + 15) * 1000);
 
-                $vid.on('ended', function () {
+                $vid.on("ended", function () {
                     clearTimeout(timer);
                     restartPlayback();
                 });
@@ -411,13 +427,7 @@
         // Check the server to see if the feed has been updated.
         //
         function updateFeed() {
-            var url = '/api/com.shepherdchurch/DigitalSignage/Device/' + settings.device;
-
-            if (settings.contentChannel) {
-                url = '/api/com.shepherdchurch/DigitalSignage/ContentChannel/' + settings.contentChannel;
-            }
-
-            $.ajax(url)
+            options.updateFeed()
                 .done(function (data) {
                     if (data.Hash === lastHash) {
                         return;
@@ -434,14 +444,14 @@
         // Move to the next audio file.
         //
         function nextAudioFile() {
-            var index = audioTracks.indexOf($audio.attr('src')) + 1;
+            var index = audioTracks.indexOf($audio.attr("src")) + 1;
 
             if (index >= audioTracks.length) {
                 index = 0;
             }
 
             if (audioTracks.length > 0) {
-                $audio.attr('src', audioTracks[index]);
+                $audio.attr("src", audioTracks[index]);
                 $audio.get(0).play();
             }
         }
@@ -449,21 +459,21 @@
         //
         // When an audio track ends, start the next.
         //
-        $audio.on('ended', function () {
+        $audio.on("ended", function () {
             nextAudioFile();
         });
 
         //
         // When an audio track fails to play, start the next with a 1s timer.
         //
-        $audio.on('error', function (e) {
+        $audio.on("error", function (e) {
             setTimeout(nextAudioFile, 1000);
         });
 
         //
         // When audio starts playing, fade it in.
         //
-        $audio.on('play', function () {
+        $audio.on("play", function () {
             $audio.animate({ volume: 1 }, settings.animationDuration);
         });
 

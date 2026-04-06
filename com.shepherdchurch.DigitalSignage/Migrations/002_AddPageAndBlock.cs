@@ -34,8 +34,8 @@ namespace com.shepherdchurch.DigitalSignage.Migrations
                 SystemGuid.BlockType.DIGITAL_SIGN_ROTATOR, "Digital Sign Rotator",
                 "Main", string.Empty, string.Empty, 0, SystemGuid.Block.DIGITAL_SIGN_DIGITAL_SIGN_ROTATOR );
 
-            RockMigrationHelper.AddPageRoute( SystemGuid.Page.DIGITAL_SIGN, "digitalsign" );
-            RockMigrationHelper.AddPageRoute( SystemGuid.Page.DIGITAL_SIGN, "digitalsign/{deviceId}" );
+            RockMigrationHelper.AddOrUpdatePageRoute( SystemGuid.Page.DIGITAL_SIGN, "digitalsign" );
+            RockMigrationHelper.AddOrUpdatePageRoute( SystemGuid.Page.DIGITAL_SIGN, "digitalsign/{deviceId}" );
         }
 
         public override void Down()

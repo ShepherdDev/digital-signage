@@ -16,12 +16,12 @@ namespace com.shepherdchurch.DigitalSignage.Migrations
             //
             // Add the attributes to the content channel.
             //
-            RockMigrationHelper.AddEntityAttribute( "Rock.Model.ContentChannel", Rock.SystemGuid.FieldType.INTEGER,
+            RockMigrationHelper.AddOrUpdateEntityAttribute( "Rock.Model.ContentChannel", Rock.SystemGuid.FieldType.INTEGER,
                 "ContentChannelTypeId", contentChannelTypeId.ToString(), "Slide Interval", string.Empty,
                 "How long each slide should remain on screen before the next transition happens. Default is to use values defined on the display block. Must be at least 4 seconds.", 0, string.Empty,
                 SystemGuid.Attribute.CONTENT_CHANNEL_SLIDE_INTERVAL, "com_shepherdchurch_SlideInterval" );
 
-            RockMigrationHelper.AddEntityAttribute( "Rock.Model.ContentChannel", Rock.SystemGuid.FieldType.MULTI_SELECT,
+            RockMigrationHelper.AddOrUpdateEntityAttribute( "Rock.Model.ContentChannel", Rock.SystemGuid.FieldType.MULTI_SELECT,
                 "ContentChannelTypeId", contentChannelTypeId.ToString(), "Transitions", string.Empty,
                 "Which transitions should be used. If none are selected then the value defined on the display block will be used.", 0, string.Empty,
                 SystemGuid.Attribute.CONTENT_CHANNEL_TRANSITIONS, "com_shepherdchurch_Transitions" );

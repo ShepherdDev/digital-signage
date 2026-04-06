@@ -1,5 +1,10 @@
 {
     "source": "src",
     "destination": "$(Environment)/Rock/RockWeb/Plugins/com_shepherdchurch/DigitalSignage",
-    "copy": true
+    "copy": true,
+    "staticFiles": {
+        "includeExtensions": [
+            "js"
+        ]
+    }
 }
