@@ -54,7 +54,7 @@ function onMouseMove(): void {
 
         clearTimeout(idleMouseTimer);
 
-        idleMouseTimer = setTimeout(function () {
+        idleMouseTimer = window.setTimeout(function () {
             if (containerElement.value) {
                 containerElement.value.style.cursor = "none";
             }
