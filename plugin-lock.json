@@ -13,6 +13,20 @@
         "Plugins/com_shepherdchurch/DigitalSignage/Scripts/flux.min.js",
         "Plugins/com_shepherdchurch/DigitalSignage/Styles/digitalsignrotator.css"
       ]
+    },
+    {
+      "version": "2.0.0",
+      "installedFiles": [
+        "Bin/com.shepherdchurch.DigitalSignage.dll",
+        "Plugins/com_shepherdchurch/DigitalSignage/Assets/4k-black.png",
+        "Plugins/com_shepherdchurch/DigitalSignage/digitalSignRotator.obs.js",
+        "Plugins/com_shepherdchurch/DigitalSignage/digitalSignRotator.obs.js.map",
+        "Plugins/com_shepherdchurch/DigitalSignage/flux.partial.js",
+        "Plugins/com_shepherdchurch/DigitalSignage/Scripts/digitalsignrotator.js",
+        "Plugins/com_shepherdchurch/DigitalSignage/Scripts/flux.js",
+        "Plugins/com_shepherdchurch/DigitalSignage/Scripts/flux.min.js",
+        "Plugins/com_shepherdchurch/DigitalSignage/Styles/digitalsignrotator.css"
+      ]
     }
   ]
 }
