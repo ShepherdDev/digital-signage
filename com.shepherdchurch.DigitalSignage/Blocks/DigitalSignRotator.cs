@@ -265,11 +265,11 @@ public class DigitalSignRotator : RockBlockType
                 {
                     if ( binaryFile.MimeType.StartsWith( "audio/" ) )
                     {
-                        contents.Audio.Add( RequestContext.ResolveRockUrl( string.Format( "~/GetFile.ashx?id={0}", binaryFile.Id ) ) );
+                        contents.Audio.Add( RequestContext.ResolveRockUrl( string.Format( "~/GetFile.ashx?guid={0}", binaryFile.Guid ) ) );
                     }
                     else if ( binaryFile.MimeType.StartsWith( "image/" ) )
                     {
-                        contents.Slides.Add( new Slide( RequestContext.ResolveRockUrl( string.Format( "~/GetImage.ashx?id={0}", binaryFile.Id ) ) , duration ) );
+                        contents.Slides.Add( new Slide( RequestContext.ResolveRockUrl( string.Format( "~/GetImage.ashx?guid={0}", binaryFile.Guid ) ) , duration ) );
                     }
                 }
             }
