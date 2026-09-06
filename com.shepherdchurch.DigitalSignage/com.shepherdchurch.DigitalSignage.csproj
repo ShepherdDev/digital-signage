@@ -14,8 +14,8 @@
   <ItemGroup>
     <PackageReference Include="SparkDevNetwork.Rock.Build.Tasks" Version="1.0.7" />
     <PackageReference Include="SparkDevNetwork.Rock.Analyzers" Version="1.0.7" />
-    <PackageReference Include="RockRMS.Rock" Version="17.6.1" />
-    <PackageReference Include="RockRMS.Rock.Blocks" Version="17.6.1" />
+    <PackageReference Include="RockRMS.Rock" Version="19.1.8" />
+    <PackageReference Include="RockRMS.Rock.Blocks" Version="19.1.8" />
   </ItemGroup>
 
 </Project>
