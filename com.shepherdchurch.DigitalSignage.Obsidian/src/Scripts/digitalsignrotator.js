@@ -429,7 +429,7 @@
         function updateFeed() {
             options.updateFeed()
                 .done(function (data) {
-                    if (data.Hash === lastHash) {
+                    if (data.hash === lastHash) {
                         return;
                     }
 
