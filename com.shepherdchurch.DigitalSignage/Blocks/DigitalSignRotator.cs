@@ -133,6 +133,8 @@ public class DigitalSignRotator : RockBlockType
         RequestContext.Response.AddCssLink( RequestContext.ResolveRockUrl( "~/Plugins/com_shepherdchurch/DigitalSignage/Styles/digitalsignrotator.css" ), true );
         RequestContext.Response.AddScriptLinkToHead( RequestContext.ResolveRockUrl( "~/Plugins/com_shepherdchurch/DigitalSignage/Scripts/flux.min.js" ), true );
         RequestContext.Response.AddScriptLinkToHead( RequestContext.ResolveRockUrl( "~/Plugins/com_shepherdchurch/DigitalSignage/Scripts/digitalsignrotator.js" ), true );
+        RequestContext.Response.AddScriptLinkToHead( "https://player.vimeo.com/api/player.js", false );
+        RequestContext.Response.AddScriptLinkToHead( "https://www.youtube.com/iframe_api", false );
 
         // If we don't have the required information then show an error.
         if ( device == null && contentChannel == null )
